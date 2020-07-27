@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <QColor>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,222 +19,109 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_lineEdit_R_textEdited()
+void MainWindow::on_lineEdit_R_editingFinished()
 {
-    CheckRGB();
-    Color::RGB rgb = GetRGB();
-    SetHSV(rgb2hsv(rgb));
-    SetHEX(rgb2hex(rgb));
-    SetVBALong(rgb2vba(rgb));
-    SetVBAHex(rgb2vba(rgb));
+    using namespace Color;
+    CheckRGB(ui->lineEdit_R, ui->lineEdit_G, ui->lineEdit_B);
+    QColor color = QColor::fromRgb(ui->lineEdit_R->text().toInt(),
+                  ui->lineEdit_G->text().toInt(),
+                  ui->lineEdit_B->text().toInt());
+    SetHSV(color);
+    SetHEX(color);
+    SetVBALong(color);
+    SetVBAHex(color);
 }
 
-void MainWindow::on_lineEdit_G_textEdited()
+void MainWindow::on_lineEdit_G_editingFinished()
 {
-    on_lineEdit_R_textEdited();
+    on_lineEdit_R_editingFinished();
 }
 
-void MainWindow::on_lineEdit_B_textEdited()
+void MainWindow::on_lineEdit_B_editingFinished()
 {
-    on_lineEdit_R_textEdited();
+    on_lineEdit_R_editingFinished();
 }
 
-void MainWindow::on_lineEdit_H_textEdited()
+void MainWindow::on_lineEdit_H_editingFinished()
 {
-    CheckHSV();
-    Color::HSV hsv = GetHSV();
-    Color::RGB rgb = hsv2rgb(hsv);
-    SetRGB(rgb);
-    SetHEX(rgb2hex(rgb));
-    SetVBALong(rgb2vba(rgb));
-    SetVBAHex(rgb2vba(rgb));
+    using namespace Color;
+    CheckHSV(ui->lineEdit_H, ui->lineEdit_S, ui->lineEdit_V);
+    QColor color;
+    color.fromHsv(ui->lineEdit_H->text().toInt(),
+                  ui->lineEdit_S->text().toInt(),
+                  ui->lineEdit_V->text().toInt());
+    SetRGB(color);
+    SetHEX(color);
+    SetVBALong(color);
+    SetVBAHex(color);
 }
 
-void MainWindow::on_lineEdit_S_textEdited()
+void MainWindow::on_lineEdit_S_editingFinished()
 {
-    on_lineEdit_H_textEdited();
+    on_lineEdit_H_editingFinished();
 }
 
-void MainWindow::on_lineEdit_V_textEdited()
+void MainWindow::on_lineEdit_V_editingFinished()
 {
-    on_lineEdit_H_textEdited();
+    on_lineEdit_H_editingFinished();
 }
 
-void MainWindow::on_lineEdit_Hex_textEdited()
+void MainWindow::on_lineEdit_Hex_editingFinished()
 {
-    CheckHEX();
-    Color::HEX hex = GetHEX();
-    Color::RGB rgb = hex2rgb(hex);
-    Color::HSV hsv = rgb2hsv(rgb);
-    Color::VBA vba = rgb2vba(rgb);
-    SetRGB(rgb);
-    SetHSV(hsv);
-    SetVBALong(vba);
-    SetVBAHex(vba);
+    using namespace Color;
+    CheckHEX(ui->lineEdit_Hex);
+    QColor color;
+    color.setNamedColor("#" + ui->lineEdit_Hex->text());
+    SetRGB(color);
+    SetHSV(color);
+    SetVBALong(color);
+    SetVBAHex(color);
 }
 
-void MainWindow::on_lineEdit_VBA_Long_textEdited()
+void MainWindow::on_lineEdit_VBA_Long_editingFinished()
 {
-    CheckVBALong();
-    Color::VBA vba = GetVbaLong();
-    Color::RGB rgb = vba2rgb(vba);
-    vba = rgb2vba(rgb);
-    Color::HSV hsv = rgb2hsv(rgb);
-    Color::HEX hex = rgb2hex(rgb);
-    SetRGB(rgb);
-    SetHEX(hex);
-    SetHSV(hsv);
-    SetVBAHex(vba);
+    using namespace Color;
+    CheckVBALong(ui->lineEdit_VBA_Long);
+    QColor color = FromVBA(ui->lineEdit_VBA_Long->text().toInt());
+    SetRGB(color);
+    SetHEX(color);
+    SetHSV(color);
+    SetVBAHex(color);
 }
 
-void MainWindow::on_lineEdit_VBA_Hex_textEdited()
+void MainWindow::on_lineEdit_VBA_Hex_editingFinished()
 {
-    CheckVBAHex();
-    Color::VBA vba = GetVbaHex();
-    Color::RGB rgb = vba2rgb(vba);
-    vba = rgb2vba(rgb);
-    Color::HSV hsv = rgb2hsv(rgb);
-    Color::HEX hex = rgb2hex(rgb);
-    SetRGB(rgb);
-    SetHEX(hex);
-    SetHSV(hsv);
-    SetVBALong(vba);
+    using namespace Color;
+    CheckVBALong(ui->lineEdit_VBA_Long);
+    QColor color = FromVBA(ui->lineEdit_VBA_Long->text().toInt(nullptr, 16));
+    SetRGB(color);
+    SetHEX(color);
+    SetHSV(color);
+    SetVBAHex(color);
 }
 
-void MainWindow::SetRGB(Color::RGB rgb) {
-    ui->lineEdit_R->setText(QString::number(rgb.r));
-    ui->lineEdit_G->setText(QString::number(rgb.g));
-    ui->lineEdit_B->setText(QString::number(rgb.b));
+void MainWindow::SetRGB(const QColor& color) {
+    ui->lineEdit_R->setText(QString::number(color.red()));
+    ui->lineEdit_G->setText(QString::number(color.green()));
+    ui->lineEdit_B->setText(QString::number(color.blue()));
 }
 
-void MainWindow::SetHEX(Color::HEX hex) {
-    std::stringstream ss;
-    ss << std::setfill('0') << std::setw(6) << std::hex << hex.hex;
-    ui->lineEdit_Hex->setText(QString::fromStdString(ss.str()));
+void MainWindow::SetHEX(const QColor& color) {
+    ui->lineEdit_Hex->setText(color.name(QColor::NameFormat::HexRgb));
 }
 
-void MainWindow::SetHSV(Color::HSV hsv) {
-    ui->lineEdit_H->setText(QString::number(hsv.h));
-    ui->lineEdit_S->setText(QString::number(hsv.s));
-    ui->lineEdit_V->setText(QString::number(hsv.v));
+void MainWindow::SetHSV(const QColor& color) {
+    ui->lineEdit_H->setText(QString::number(color.hue()));
+    ui->lineEdit_S->setText(QString::number(color.saturation()));
+    ui->lineEdit_V->setText(QString::number(color.value()));
 }
 
-void MainWindow::SetVBALong(Color::VBA vba) {
-    ui->lineEdit_VBA_Long->setText(QString::number(vba.rgb));
+void MainWindow::SetVBALong(const QColor& color) {
+    using namespace Color;
+    ui->lineEdit_VBA_Long->setText(QString::number(GetVBA(color)));
 }
 
-void MainWindow::SetVBAHex(Color::VBA vba) {
-    ui->lineEdit_VBA_Hex->setText(QString::fromStdString(vba.hex));
-}
-
-Color::RGB MainWindow::GetRGB() const {
-    return {
-        ui->lineEdit_R->text().toInt(),
-                ui->lineEdit_G->text().toInt(),
-                ui->lineEdit_B->text().toInt(),
-    };
-}
-
-Color::HEX MainWindow::GetHEX() const {
-    return {
-        ui->lineEdit_Hex->text().toInt(nullptr, 16)
-    };
-}
-
-Color::HSV MainWindow::GetHSV() const {
-    return {
-        ui->lineEdit_H->text().toInt(),
-                ui->lineEdit_S->text().toInt(),
-                ui->lineEdit_V->text().toInt(),
-    };
-}
-
-Color::VBA MainWindow::GetVbaLong() const {
-    return Color::VBA(ui->lineEdit_VBA_Long->text().toInt());
-}
-Color::VBA MainWindow::GetVbaHex() const {
-    return Color::VBA(ui->lineEdit_VBA_Hex->text().toStdString());
-}
-
-void MainWindow::CheckRGB() {
-    if (ui->lineEdit_R->text().toInt() > 255) {
-        ui->lineEdit_R->setText(QString::number(255));
-    } else if (ui->lineEdit_R->text().toInt() < 0) {
-        ui->lineEdit_R->setText(QString::number(0));
-    }
-
-    if (ui->lineEdit_G->text().toInt() > 255) {
-        ui->lineEdit_G->setText(QString::number(255));
-    } else if (ui->lineEdit_G->text().toInt() < 0) {
-        ui->lineEdit_G->setText(QString::number(0));
-    }
-
-    if (ui->lineEdit_B->text().toInt() > 255) {
-        ui->lineEdit_B->setText(QString::number(255));
-    } else if (ui->lineEdit_B->text().toInt() < 0) {
-        ui->lineEdit_B->setText(QString::number(0));
-    }
-}
-
-void MainWindow::CheckHEX() {
-    std::stringstream ss;
-    std::string line = ui->lineEdit_Hex->text().toStdString();
-    if (line.size() > 6) {
-        ui->lineEdit_Hex->setText("ffffff");
-        return;
-    }
-    ss << line;
-    int hex;
-    ss >> std::hex >> hex;
-    if (hex < 0) {
-        ui->lineEdit_Hex->setText("000000");
-    } else if(hex > 0xffffff) {
-        ui->lineEdit_Hex->setText("ffffff");
-    }
-}
-
-void MainWindow::CheckHSV() {
-    if (ui->lineEdit_H->text().toInt() > 359) {
-        ui->lineEdit_H->setText(QString::number(359));
-    } else if (ui->lineEdit_H->text().toInt() < 0) {
-        ui->lineEdit_H->setText(QString::number(0));
-    }
-
-    if (ui->lineEdit_S->text().toInt() > 100) {
-        ui->lineEdit_S->setText(QString::number(100));
-    } else if (ui->lineEdit_S->text().toInt() < 0) {
-        ui->lineEdit_S->setText(QString::number(0));
-    }
-
-    if (ui->lineEdit_V->text().toInt() > 100) {
-        ui->lineEdit_V->setText(QString::number(100));
-    } else if (ui->lineEdit_V->text().toInt() < 0) {
-        ui->lineEdit_V->setText(QString::number(0));
-    }
-}
-
-void MainWindow::CheckVBALong() {
-    int vba = ui->lineEdit_VBA_Long->text().toInt();
-    if (vba < 0) {
-        ui->lineEdit_VBA_Long->setText("0");
-    } else if (vba > Color::VBA_RGB_LIMIT) {
-        ui->lineEdit_VBA_Long->setText(QString::number(Color::VBA_RGB_LIMIT));
-    }
-}
-
-void MainWindow::CheckVBAHex() {
-    std::stringstream ss;
-    std::string line = ui->lineEdit_VBA_Hex->text().toStdString();
-    if (line.size() > 6) {
-        ui->lineEdit_VBA_Hex->setText("FFFFFF");
-        return;
-    }
-    ss << line;
-    int hex;
-    ss >> std::hex >> hex;
-    if (hex < Color::HEX_MIN) {
-        ui->lineEdit_VBA_Hex->setText("000000");
-    } else if(hex > Color::HEX_MAX) {
-        ui->lineEdit_VBA_Hex->setText("FFFFFF");
-    }
+void MainWindow::SetVBAHex(const QColor& color) {
+    using namespace Color;
+    ui->lineEdit_VBA_Hex->setText(QString::number(GetVBA(color), 16));
 }
