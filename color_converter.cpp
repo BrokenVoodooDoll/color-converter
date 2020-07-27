@@ -52,29 +52,24 @@ HSV rgb2hsv(RGB rgb) {
 
 }
 RGB hsv2rgb(HSV hsv) {
-    const double c = (hsv.v / 100.) * (hsv.s / 100.);
-    const int h = std::round(hsv.h / 60);
-    const double x = c * (1 - abs(h % 2 - 1));
+    const int h = (hsv.h / 60) % 6;
+    const double v_min = hsv.v * (100. - hsv.s) / 100.;
+    const double a = (hsv.v - v_min) * (hsv.h % 60) / 60.;
+    const double v_inc = v_min + a;
+    const double v_dec = hsv.v - a;
+
     double r, g, b;
-    if (h >= 0 && h <= 1) {
-        r = c; g = x; b = 0;
-    } else if(h > 1 && h <= 2) {
-        r = x; g = c; b = 0;
-    } else if(h > 2 && h <= 3) {
-        r = 0; g = c; b = x;
-    } else if(h > 3 && h <= 4) {
-        r = 0; g = x; b = c;
-    } else if(h > 4 && h <= 5) {
-        r = x; g = 0; b = c;
-    } else if(h > 5 && h <= 6) {
-        r = c; g = 0; b = x;
-    } else {
-        r = 0; g = 0; b = 0;
+    switch(h) {
+        case 0: r = hsv.v; g = v_inc; b = v_min; break;
+        case 1: r = v_dec; g = hsv.v; b = v_min; break;
+        case 2: r = v_min; g = hsv.v; b = v_inc; break;
+        case 3: r = v_min; g = v_dec; b = hsv.v; break;
+        case 4: r = v_inc; g = v_min; b = hsv.v; break;
+        case 5: r = hsv.v; g = v_min; b = v_dec; break;
     }
-    const double m = (h - c) / 100.;
-    return {static_cast<int>((r + m) * 255.),
-                static_cast<int>((g + m) * 255.),
-                static_cast<int>((b + m) * 255.)};
+    return {static_cast<int>(r * 255. / 100.),
+                static_cast<int>(g * 255. / 100.),
+                static_cast<int>(b * 255. / 100.)};
 }
 
 VBA rgb2vba(RGB rgb) {
