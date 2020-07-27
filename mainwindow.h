@@ -24,9 +24,47 @@ private slots:
 
     void on_lineEdit_B_editingFinished();
 
-    void SetHSV(Color::RGB rgb);
+    void on_lineEdit_H_editingFinished();
+
+    void on_lineEdit_S_editingFinished();
+
+    void on_lineEdit_V_editingFinished();
+
+    void SetRGB(Color::RGB rgb);
+
+    void SetHEX(Color::HEX hex);
+
+    void SetHSV(Color::HSV hsv);
+
+    void SetVBALong(Color::VBA vba);
+
+    void SetVBAHex(Color::VBA vba);
+
+    void CheckRGB();
+
+    void CheckHEX();
+
+    void CheckHSV();
+
+    void CheckVBALong();
+
+    void CheckVBAHex();
 
     Color::RGB GetRGB() const;
+
+    Color::HEX GetHEX() const;
+
+    Color::HSV GetHSV() const;
+
+    Color::VBA GetVbaLong() const;
+
+    Color::VBA GetVbaHex() const;
+
+    void on_lineEdit_Hex_editingFinished();
+
+    void on_lineEdit_VBA_Long_editingFinished();
+
+    void on_lineEdit_VBA_Hex_editingFinished();
 
 private:
     Ui::MainWindow *ui;

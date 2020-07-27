@@ -9,6 +9,10 @@ namespace Color{
         int b;
     };
 
+    struct HEX {
+        int hex;
+    };
+
     struct HSV {
         int h;
         int s;
@@ -16,14 +20,21 @@ namespace Color{
     };
 
     struct VBA {
+        VBA();
+        VBA(int rgb_);
+        VBA(std::string hex_);
+
         int rgb;
         std::string hex;
     };
 
     HSV rgb2hsv(RGB rgb);
     RGB hsv2rgb(HSV hsv);
+
+    HEX rgb2hex(RGB rgb);
+    RGB hex2rgb(HEX hex);
+
     VBA rgb2vba(RGB rgb);
-    VBA hsv2vba(RGB hsv);
     RGB vba2rgb(VBA vba);
     HSV vba2hsv(VBA vba);
 }
