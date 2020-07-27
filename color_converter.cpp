@@ -7,12 +7,6 @@
 #include <iomanip>
 #include <QString>
 
-template<typename T>
-T abs(T value) {
-    return value < 0 ? -value : value;
-}
-
-
 namespace Color{
 VBA::VBA() {}
 
@@ -32,16 +26,18 @@ VBA::VBA(std::string hex_)
 }
 
 HSV rgb2hsv(RGB rgb) {
-    const std::vector<double> colors {rgb.r / 255.0, rgb.g / 255.0, rgb.b / 255.0};
+    const std::vector<double> colors {rgb.r / 255., rgb.g / 255., rgb.b / 255.};
     const double v = *std::max_element(colors.begin(), colors.end());
-    const double c = v - *std::min(colors.begin(), colors.end());
+    const double c = v - *std::min_element(colors.begin(), colors.end());
     double h;
     if (c == 0) {
-        h = 0;
+        h = 0.;
     } else {
-        if (v == rgb.r) {
+        if (v == colors[0] && colors[1] >= colors[2]) {
             h = 60. * (0 + (colors[1] - colors[2]) / c);
-        } else if (v == rgb.g) {
+        } else if (v == colors[0] && colors[1] < colors[2]) {
+            h = 60. * (6 + (colors[1] - colors[2]) / c);
+        } else if (v == colors[1]) {
             h = 60. * (2 + (colors[2] - colors[0]) / c);
         } else {
             h = 60. * (4 + (colors[0] - colors[1]) / c);
@@ -66,6 +62,7 @@ RGB hsv2rgb(HSV hsv) {
         case 3: r = v_min; g = v_dec; b = hsv.v; break;
         case 4: r = v_inc; g = v_min; b = hsv.v; break;
         case 5: r = hsv.v; g = v_min; b = v_dec; break;
+        default: r = 0; g = 0; b = 0; break;
     }
     return {static_cast<int>(r * 255. / 100.),
                 static_cast<int>(g * 255. / 100.),
