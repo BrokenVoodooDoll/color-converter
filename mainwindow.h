@@ -18,17 +18,23 @@ public:
 
 private slots:
 
-    void on_lineEdit_R_editingFinished();
+    void on_lineEdit_R_textEdited();
 
-    void on_lineEdit_G_editingFinished();
+    void on_lineEdit_G_textEdited();
 
-    void on_lineEdit_B_editingFinished();
+    void on_lineEdit_B_textEdited();
 
-    void on_lineEdit_H_editingFinished();
+    void on_lineEdit_H_textEdited();
 
-    void on_lineEdit_S_editingFinished();
+    void on_lineEdit_S_textEdited();
 
-    void on_lineEdit_V_editingFinished();
+    void on_lineEdit_V_textEdited();
+
+    void on_lineEdit_Hex_textEdited();
+
+    void on_lineEdit_VBA_Long_textEdited();
+
+    void on_lineEdit_VBA_Hex_textEdited();
 
     void SetRGB(Color::RGB rgb);
 
@@ -59,12 +65,6 @@ private slots:
     Color::VBA GetVbaLong() const;
 
     Color::VBA GetVbaHex() const;
-
-    void on_lineEdit_Hex_editingFinished();
-
-    void on_lineEdit_VBA_Long_editingFinished();
-
-    void on_lineEdit_VBA_Hex_editingFinished();
 
 private:
     Ui::MainWindow *ui;

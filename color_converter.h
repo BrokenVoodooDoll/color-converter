@@ -3,6 +3,10 @@
 #include <string>
 
 namespace Color{
+    static int VBA_RGB_LIMIT = 16777215;
+    static int HEX_MAX = 0xffffff;
+    static int HEX_MIN = 0x000000;
+
     struct RGB {
         int r;
         int g;

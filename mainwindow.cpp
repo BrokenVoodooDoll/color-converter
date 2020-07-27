@@ -18,7 +18,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_lineEdit_R_editingFinished()
+void MainWindow::on_lineEdit_R_textEdited()
 {
     CheckRGB();
     Color::RGB rgb = GetRGB();
@@ -28,17 +28,17 @@ void MainWindow::on_lineEdit_R_editingFinished()
     SetVBAHex(rgb2vba(rgb));
 }
 
-void MainWindow::on_lineEdit_G_editingFinished()
+void MainWindow::on_lineEdit_G_textEdited()
 {
-    on_lineEdit_R_editingFinished();
+    on_lineEdit_R_textEdited();
 }
 
-void MainWindow::on_lineEdit_B_editingFinished()
+void MainWindow::on_lineEdit_B_textEdited()
 {
-    on_lineEdit_R_editingFinished();
+    on_lineEdit_R_textEdited();
 }
 
-void MainWindow::on_lineEdit_H_editingFinished()
+void MainWindow::on_lineEdit_H_textEdited()
 {
     CheckHSV();
     Color::HSV hsv = GetHSV();
@@ -49,17 +49,17 @@ void MainWindow::on_lineEdit_H_editingFinished()
     SetVBAHex(rgb2vba(rgb));
 }
 
-void MainWindow::on_lineEdit_S_editingFinished()
+void MainWindow::on_lineEdit_S_textEdited()
 {
-    on_lineEdit_H_editingFinished();
+    on_lineEdit_H_textEdited();
 }
 
-void MainWindow::on_lineEdit_V_editingFinished()
+void MainWindow::on_lineEdit_V_textEdited()
 {
-    on_lineEdit_H_editingFinished();
+    on_lineEdit_H_textEdited();
 }
 
-void MainWindow::on_lineEdit_Hex_editingFinished()
+void MainWindow::on_lineEdit_Hex_textEdited()
 {
     CheckHEX();
     Color::HEX hex = GetHEX();
@@ -72,7 +72,7 @@ void MainWindow::on_lineEdit_Hex_editingFinished()
     SetVBAHex(vba);
 }
 
-void MainWindow::on_lineEdit_VBA_Long_editingFinished()
+void MainWindow::on_lineEdit_VBA_Long_textEdited()
 {
     CheckVBALong();
     Color::VBA vba = GetVbaLong();
@@ -86,7 +86,7 @@ void MainWindow::on_lineEdit_VBA_Long_editingFinished()
     SetVBAHex(vba);
 }
 
-void MainWindow::on_lineEdit_VBA_Hex_editingFinished()
+void MainWindow::on_lineEdit_VBA_Hex_textEdited()
 {
     CheckVBAHex();
     Color::VBA vba = GetVbaHex();
@@ -216,8 +216,8 @@ void MainWindow::CheckVBALong() {
     int vba = ui->lineEdit_VBA_Long->text().toInt();
     if (vba < 0) {
         ui->lineEdit_VBA_Long->setText("0");
-    } else if (vba > 16646655) {
-        ui->lineEdit_VBA_Long->setText("16646655");
+    } else if (vba > Color::VBA_RGB_LIMIT) {
+        ui->lineEdit_VBA_Long->setText(QString::number(Color::VBA_RGB_LIMIT));
     }
 }
 
@@ -231,9 +231,9 @@ void MainWindow::CheckVBAHex() {
     ss << line;
     int hex;
     ss >> std::hex >> hex;
-    if (hex < 0) {
+    if (hex < Color::HEX_MIN) {
         ui->lineEdit_VBA_Hex->setText("000000");
-    } else if(hex > 0xffffff) {
+    } else if(hex > Color::HEX_MAX) {
         ui->lineEdit_VBA_Hex->setText("FFFFFF");
     }
 }
