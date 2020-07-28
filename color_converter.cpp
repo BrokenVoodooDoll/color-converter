@@ -8,45 +8,7 @@
 #include <QString>
 
 namespace Color{
-VBA::VBA() {}
 
-VBA::VBA(int rgb_)
-    : rgb(rgb_) {
-
-    std::stringstream ss;
-    ss << std::setfill('0') << std::setw(6) << std::hex << rgb;
-    hex = ss.str();
-    boost::to_upper(hex);
-}
-
-VBA::VBA(std::string hex_)
-    : hex(hex_) {
-
-    rgb = QString::fromStdString(hex).toInt(nullptr, 16);
-}
-
-HSV rgb2hsv(RGB rgb) {
-    const std::vector<double> colors {rgb.r / 255., rgb.g / 255., rgb.b / 255.};
-    const double v = *std::max_element(colors.begin(), colors.end());
-    const double c = v - *std::min_element(colors.begin(), colors.end());
-    double h;
-    if (c == 0) {
-        h = 0.;
-    } else {
-        if (v == colors[0] && colors[1] >= colors[2]) {
-            h = 60. * (0 + (colors[1] - colors[2]) / c);
-        } else if (v == colors[0] && colors[1] < colors[2]) {
-            h = 60. * (6 + (colors[1] - colors[2]) / c);
-        } else if (v == colors[1]) {
-            h = 60. * (2 + (colors[2] - colors[0]) / c);
-        } else {
-            h = 60. * (4 + (colors[0] - colors[1]) / c);
-        }
-    }
-    const double s = v == 0 ? 0 : c / v;
-    return {static_cast<int>(std::round(h)), static_cast<int>(std::round(100 * s)), static_cast<int>(std::round(100 * v))};
-
-}
 RGB hsv2rgb(HSV hsv) {
     const int h = (hsv.h / 60) % 6;
     const double v_min = hsv.v * (100. - hsv.s) / 100.;
@@ -69,43 +31,52 @@ RGB hsv2rgb(HSV hsv) {
                 static_cast<int>(b * 255. / 100.)};
 }
 
-VBA rgb2vba(RGB rgb) {
-    VBA vba;
-    vba.rgb = rgb.r + rgb.g * 256 + rgb.b * 256 * 256;
+HSV rgb2hsv(RGB rgb) {
+    const std::vector<double> colors {rgb.r / 255., rgb.g / 255., rgb.b / 255.};
+    const double v = *std::max_element(colors.begin(), colors.end());
+    const double c = v - *std::min_element(colors.begin(), colors.end());
 
-    std::stringstream ss;
-    ss << std::setfill('0') << std::setw(6) << std::hex << vba.rgb;
-    vba.hex = ss.str();
-    boost::to_upper(vba.hex);
+    double h;
+    if (c == 0) {
+        h = 0.;
+    } else {
+        if (v == colors[0] && colors[1] >= colors[2]) {
+            h = 60. * (0 + (colors[1] - colors[2]) / c);
+        } else if (v == colors[0] && colors[1] < colors[2]) {
+            h = 60. * (6 + (colors[1] - colors[2]) / c);
+        } else if (v == colors[1]) {
+            h = 60. * (2 + (colors[2] - colors[0]) / c);
+        } else {
+            h = 60. * (4 + (colors[0] - colors[1]) / c);
+        }
+    }
 
-    return vba;
+    const double s = v == 0 ? 0 : c / v;
+    return {static_cast<int>(std::round(h)), static_cast<int>(std::round(100 * s)), static_cast<int>(std::round(100 * v))};
+
 }
 
 RGB vba2rgb(VBA vba) {
-    RGB rgb;
-    rgb.r = vba.rgb % 256;
-    rgb.g = (vba.rgb / 256) % 256;
-    rgb.b = (vba.rgb / 256 / 256) % 256;
-
-    return rgb;
+    return { vba.vba % 256,
+                (vba.vba / 256) % 256,
+                (vba.vba / 256 / 256) % 256 };
 }
-HSV vba2hsv(VBA vba) {
-    return rgb2hsv(vba2rgb(vba));
+
+VBA rgb2vba(RGB rgb) {
+    return { rgb.r + rgb.g * 256 + rgb.b * 256 * 256 };
+//    std::stringstream ss;
+//    ss << std::setfill('0') << std::setw(6) << std::hex << vba.vba;
+//    boost::to_upper(vba.vba);
+}
+
+RGB hex2rgb(HEX hex) {
+    return { (hex.hex / 256 / 256) % 256,
+                (hex.hex / 256) % 256,
+                hex.hex % 256 };
 }
 
 HEX rgb2hex(RGB rgb) {
-    return {
-        256 * 256 * rgb.r +
-                256 * rgb.g +
-                rgb.b
-    };
+    return { 256 * 256 * rgb.r + 256 * rgb.g + rgb.b };
 }
-RGB hex2rgb(HEX hex) {
-    RGB rgb;
-    rgb.r = (hex.hex / 256 / 256) % 256;
-    rgb.g = (hex.hex / 256) % 256;
-    rgb.b = hex.hex % 256;
 
-    return rgb;
-}
 }
