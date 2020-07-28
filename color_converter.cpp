@@ -9,9 +9,9 @@ namespace Color{
 void CheckField(QLineEdit *comp, int min, int max, int base) {
     bool ok = true;
 
-    if (comp->text().toInt(&ok) > max) {
+    if (comp->text().toInt(&ok, base) > max) {
         comp->setText(QString::number(max, base));
-    } else if (comp->text().toInt(&ok) < min) {
+    } else if (comp->text().toInt(&ok, base) < min) {
         comp->setText(QString::number(min, base));
     }
     if (!ok) {
@@ -31,8 +31,8 @@ void CheckHEX(QLineEdit *hex) {
 
 void CheckHSV(QLineEdit *h, QLineEdit *s, QLineEdit *v) {
     CheckField(h, 0, 359);
-    CheckField(s, 0, 100);
-    CheckField(v, 0, 100);
+    CheckField(s, 0, 255);
+    CheckField(v, 0, 255);
 }
 
 void CheckVBALong(QLineEdit *vba) {

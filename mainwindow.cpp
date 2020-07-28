@@ -97,7 +97,7 @@ void MainWindow::on_lineEdit_VBA_Hex_editingFinished()
     SetRGB(color);
     SetHEX(color);
     SetHSV(color);
-    SetVBAHex(color);
+    SetVBALong(color);
 }
 
 void MainWindow::SetRGB(const QColor& color) {
@@ -107,7 +107,7 @@ void MainWindow::SetRGB(const QColor& color) {
 }
 
 void MainWindow::SetHEX(const QColor& color) {
-    ui->lineEdit_Hex->setText(color.name(QColor::NameFormat::HexRgb));
+    ui->lineEdit_Hex->setText(color.name(QColor::NameFormat::HexRgb).right(6));
 }
 
 void MainWindow::SetHSV(const QColor& color) {
