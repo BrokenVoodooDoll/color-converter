@@ -1,11 +1,15 @@
 #ifndef COLOR_CONVERTER_H
 #define COLOR_CONVERTER_H
 #include <string>
+#include <QLineEdit>
+#include <QString>
 
 namespace Color{
-static int VBA_LIMIT = 16777215;
+static int VBA_LIMIT = 16'777'215;
 static int HEX_MAX = 0xffffff;
 static int HEX_MIN = 0x000000;
+
+std::string GetHexCode(int);
 
 struct RGB {
     int r;
@@ -15,6 +19,10 @@ struct RGB {
 
 struct HEX {
     int hex;
+
+    QString GetCode() const {
+        return QString::fromStdString(GetHexCode(hex));
+    }
 };
 
 struct HSV {
@@ -25,6 +33,10 @@ struct HSV {
 
 struct VBA {
     int vba;
+
+    QString GetCode() const {
+        return QString::fromStdString(GetHexCode(vba));
+    }
 };
 
 HSV rgb2hsv(RGB rgb);
@@ -92,5 +104,18 @@ private:
     HSV hsv_;
     VBA vba_;
 };
+
+void CheckField(QLineEdit *comp, int min = 0, int max = 255, int base = 10);
+
+void CheckRGB(QLineEdit *r, QLineEdit *g, QLineEdit *b);
+
+void CheckHEX(QLineEdit *hex);
+
+void CheckHSV(QLineEdit *h, QLineEdit *s, QLineEdit *v);
+
+void CheckVBALong(QLineEdit *vba);
+
+void CheckVBAHex(QLineEdit *vba);
+
 }
 #endif // COLOR_CONVERTER_H

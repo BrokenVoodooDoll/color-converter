@@ -18,53 +18,33 @@ public:
 
 private slots:
 
-    void on_lineEdit_R_textEdited();
+    void on_lineEdit_R_editingFinished();
 
-    void on_lineEdit_G_textEdited();
+    void on_lineEdit_G_editingFinished();
 
-    void on_lineEdit_B_textEdited();
+    void on_lineEdit_B_editingFinished();
 
-    void on_lineEdit_H_textEdited();
+    void on_lineEdit_H_editingFinished();
 
-    void on_lineEdit_S_textEdited();
+    void on_lineEdit_S_editingFinished();
 
-    void on_lineEdit_V_textEdited();
+    void on_lineEdit_V_editingFinished();
 
-    void on_lineEdit_Hex_textEdited();
+    void on_lineEdit_Hex_editingFinished();
 
-    void on_lineEdit_VBA_Long_textEdited();
+    void on_lineEdit_VBA_Long_editingFinished();
 
-    void on_lineEdit_VBA_Hex_textEdited();
+    void on_lineEdit_VBA_Hex_editingFinished();
 
-    void SetRGB(Color::RGB rgb);
+    void SetRGB(const Color::Color& rgb);
 
-    void SetHEX(Color::HEX hex);
+    void SetHEX(const Color::Color& hex);
 
-    void SetHSV(Color::HSV hsv);
+    void SetHSV(const Color::Color& hsv);
 
-    void SetVBALong(Color::VBA vba);
+    void SetVBALong(const Color::Color& vba);
 
-    void SetVBAHex(Color::VBA vba);
-
-    void CheckRGB();
-
-    void CheckHEX();
-
-    void CheckHSV();
-
-    void CheckVBALong();
-
-    void CheckVBAHex();
-
-    Color::RGB GetRGB() const;
-
-    Color::HEX GetHEX() const;
-
-    Color::HSV GetHSV() const;
-
-    Color::VBA GetVbaLong() const;
-
-    Color::VBA GetVbaHex() const;
+    void SetVBAHex(const Color::Color& vba);
 
 private:
     Ui::MainWindow *ui;

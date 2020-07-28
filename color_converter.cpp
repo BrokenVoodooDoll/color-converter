@@ -3,11 +3,52 @@
 #include <vector>
 #include <cmath>
 #include <sstream>
-#include <boost/algorithm/string.hpp>
 #include <iomanip>
-#include <QString>
 
 namespace Color{
+
+std::string GetHexCode(int hex) {
+    std::stringstream ss;
+    ss << std::setfill('0') << std::setw(6) << std::hex << hex;
+    return ss.str();
+}
+
+void CheckField(QLineEdit *comp, int min, int max, int base) {
+    bool ok = true;
+
+    if (comp->text().toInt(&ok, base) > max) {
+        comp->setText(QString::number(max, base));
+    } else if (comp->text().toInt(&ok, base) < min) {
+        comp->setText(QString::number(min, base));
+    }
+    if (!ok) {
+        comp->setText(QString::number(min, base));
+    }
+}
+
+void CheckRGB(QLineEdit* r, QLineEdit* g, QLineEdit* b) {
+    CheckField(r);
+    CheckField(g);
+    CheckField(b);
+}
+
+void CheckHEX(QLineEdit *hex) {
+    CheckField(hex, HEX_MIN, HEX_MAX, 16);
+}
+
+void CheckHSV(QLineEdit *h, QLineEdit *s, QLineEdit *v) {
+    CheckField(h, 0, 359);
+    CheckField(s, 0, 100);
+    CheckField(v, 0, 100);
+}
+
+void CheckVBALong(QLineEdit *vba) {
+    CheckField(vba, 0, VBA_LIMIT);
+}
+
+void CheckVBAHex(QLineEdit *vba) {
+    CheckField(vba, HEX_MIN, HEX_MAX, 16);
+}
 
 RGB hsv2rgb(HSV hsv) {
     const int h = (hsv.h / 60) % 6;
@@ -64,9 +105,6 @@ RGB vba2rgb(VBA vba) {
 
 VBA rgb2vba(RGB rgb) {
     return { rgb.r + rgb.g * 256 + rgb.b * 256 * 256 };
-//    std::stringstream ss;
-//    ss << std::setfill('0') << std::setw(6) << std::hex << vba.vba;
-//    boost::to_upper(vba.vba);
 }
 
 RGB hex2rgb(HEX hex) {
