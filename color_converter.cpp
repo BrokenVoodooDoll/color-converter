@@ -47,7 +47,7 @@ void CheckVBALong(QLineEdit *vba) {
 }
 
 void CheckVBAHex(QLineEdit *vba) {
-    CheckField(vba, HEX_MIN, HEX_MAX, 16);
+    CheckField(vba, 0, HEX_MAX, 16);
 }
 
 RGB hsv2rgb(HSV hsv) {
@@ -93,7 +93,11 @@ HSV rgb2hsv(RGB rgb) {
     }
 
     const double s = v == 0 ? 0 : c / v;
-    return {static_cast<int>(std::round(h)), static_cast<int>(std::round(100 * s)), static_cast<int>(std::round(100 * v))};
+    return {
+        static_cast<int>(std::round(h)),
+                static_cast<int>(std::round(100 * s)),
+                static_cast<int>(std::round(100 * v))
+    };
 
 }
 

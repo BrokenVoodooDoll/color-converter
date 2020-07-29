@@ -76,8 +76,8 @@ public:
         : vba_(vba) {
         // конвертация
         rgb_ = vba2rgb(vba_);
+        hex_ = rgb2hex(rgb_);
         hsv_ = rgb2hsv(rgb_);
-        vba_ = rgb2vba(rgb_);
     }
 
     //Getters
@@ -92,11 +92,8 @@ public:
     int GetValue() const { return hsv_.v; }
 
     HEX GetHex() const { return hex_; }
-    //string GetHexCode
 
     VBA GetVba() const { return vba_; }
-    //int GetVbaValue
-    //string GetVbaCode
 
 private:
     RGB rgb_;

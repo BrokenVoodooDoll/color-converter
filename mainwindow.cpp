@@ -94,14 +94,14 @@ void MainWindow::on_lineEdit_VBA_Long_editingFinished()
 
 void MainWindow::on_lineEdit_VBA_Hex_editingFinished()
 {
-    Color::CheckVBALong(ui->lineEdit_VBA_Long);
+    Color::CheckVBAHex(ui->lineEdit_VBA_Hex);
     Color::Color color(Color::VBA {
-                           ui->lineEdit_VBA_Long->text().toInt(nullptr, 16)
+                           ui->lineEdit_VBA_Hex->text().toInt(nullptr, 16)
                        });
     SetRGB(color);
     SetHEX(color);
     SetHSV(color);
-    SetVBAHex(color);
+    SetVBALong(color);
 }
 
 void MainWindow::SetRGB(const Color::Color& color) {
@@ -122,11 +122,9 @@ void MainWindow::SetHSV(const Color::Color& color) {
 }
 
 void MainWindow::SetVBALong(const Color::Color& color) {
-    using namespace Color;
     ui->lineEdit_VBA_Long->setText(QString::number(color.GetVba().vba));
 }
 
 void MainWindow::SetVBAHex(const Color::Color& color) {
-    using namespace Color;
-    ui->lineEdit_VBA_Hex->setText(color.GetHex().GetCode());
+    ui->lineEdit_VBA_Hex->setText(color.GetVba().GetCode());
 }

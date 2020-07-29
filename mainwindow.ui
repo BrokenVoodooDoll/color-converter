@@ -290,6 +290,17 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_R</tabstop>
+  <tabstop>lineEdit_G</tabstop>
+  <tabstop>lineEdit_B</tabstop>
+  <tabstop>lineEdit_Hex</tabstop>
+  <tabstop>lineEdit_H</tabstop>
+  <tabstop>lineEdit_S</tabstop>
+  <tabstop>lineEdit_V</tabstop>
+  <tabstop>lineEdit_VBA_Long</tabstop>
+  <tabstop>lineEdit_VBA_Hex</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
