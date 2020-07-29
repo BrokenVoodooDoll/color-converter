@@ -4,10 +4,12 @@
 #include <QLineEdit>
 #include <QString>
 
+#define COLOR_MAX 0xffffff
+#define RGB_MAX 255
+#define H_MAX 359
+#define SV_MAX 100
+
 namespace Color{
-static int VBA_LIMIT = 16'777'215;
-static int HEX_MAX = 0xffffff;
-static int HEX_MIN = 0x000000;
 
 std::string GetHexCode(int);
 
@@ -102,7 +104,7 @@ private:
     VBA vba_;
 };
 
-void CheckField(QLineEdit *comp, int min = 0, int max = 255, int base = 10);
+void CheckField(QLineEdit *comp, int min = 0, int max = RGB_MAX, int base = 10);
 
 void CheckRGB(QLineEdit *r, QLineEdit *g, QLineEdit *b);
 

@@ -33,21 +33,21 @@ void CheckRGB(QLineEdit* r, QLineEdit* g, QLineEdit* b) {
 }
 
 void CheckHEX(QLineEdit *hex) {
-    CheckField(hex, HEX_MIN, HEX_MAX, 16);
+    CheckField(hex, 0, COLOR_MAX, 16);
 }
 
 void CheckHSV(QLineEdit *h, QLineEdit *s, QLineEdit *v) {
-    CheckField(h, 0, 359);
-    CheckField(s, 0, 100);
-    CheckField(v, 0, 100);
+    CheckField(h, 0, H_MAX);
+    CheckField(s, 0, SV_MAX);
+    CheckField(v, 0, SV_MAX);
 }
 
 void CheckVBALong(QLineEdit *vba) {
-    CheckField(vba, 0, VBA_LIMIT);
+    CheckField(vba, 0, COLOR_MAX);
 }
 
 void CheckVBAHex(QLineEdit *vba) {
-    CheckField(vba, 0, HEX_MAX, 16);
+    CheckField(vba, 0, COLOR_MAX, 16);
 }
 
 RGB hsv2rgb(HSV hsv) {
