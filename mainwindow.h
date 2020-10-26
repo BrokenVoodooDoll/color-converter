@@ -3,50 +3,60 @@
 
 #include "color_converter.h"
 #include <QMainWindow>
+#include <QGroupBox>
+#include <QSpinBox>
+#include <QLineEdit>
+#include <QColor>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
+class ColorWidget;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+    QSpinBox *m_r;
+    QSpinBox *m_g;
+    QSpinBox *m_b;
+
+    QSpinBox *m_h;
+    QSpinBox *m_s;
+    QSpinBox *m_v;
+
+    QLineEdit *m_hex;
+    QSpinBox *m_vba;
+
+    ColorWidget *m_colorWidget;
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+public slots:
+    void slotColorChanged(const QString& value);
 
-    void on_lineEdit_R_editingFinished();
-
-    void on_lineEdit_G_editingFinished();
-
-    void on_lineEdit_B_editingFinished();
-
-    void on_lineEdit_H_editingFinished();
-
-    void on_lineEdit_S_editingFinished();
-
-    void on_lineEdit_V_editingFinished();
-
-    void on_lineEdit_Hex_editingFinished();
-
-    void on_lineEdit_VBA_Long_editingFinished();
-
-    void on_lineEdit_VBA_Hex_editingFinished();
-
-    void SetRGB(const Color::Color& rgb);
-
-    void SetHEX(const Color::Color& hex);
-
-    void SetHSV(const Color::Color& hsv);
-
-    void SetVBALong(const Color::Color& vba);
-
-    void SetVBAHex(const Color::Color& vba);
+signals:
+    void colorChanged(const QColor& color);
 
 private:
-    Ui::MainWindow *ui;
+    QGroupBox* setupRgb();
+    QGroupBox* setupHsv();
+    QGroupBox* setupHex();
+    QGroupBox* setupVba();
+    QGroupBox* setupColorWidget();
+    void blockAllSignals(bool b);
+};
+
+class ColorWidget : public QWidget {
+    Q_OBJECT
+
+    QColor m_color;
+
+protected:
+    void paintEvent(QPaintEvent*) override;
+
+public:
+    ColorWidget(QWidget* parent = nullptr);
+
+public slots:
+    void colorChanged(const QColor& color);
 };
 #endif // MAINWINDOW_H

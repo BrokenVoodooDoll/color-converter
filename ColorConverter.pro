@@ -15,23 +15,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += \
-    "/usr/local/Cellar/boost/1.72.0_3/include/"
-
-LIBS += \
-    -L/usr/local/Cellar/boost/1.72.0_3/lib/
-
 SOURCES += \
-    color_converter.cpp \
+#    color_converter.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    color_converter.h \
+#    color_converter.h \
     mainwindow.h
-
-FORMS += \
-    mainwindow.ui
 
 ICON = paint.icns
 
